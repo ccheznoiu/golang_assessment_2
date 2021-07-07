@@ -8,7 +8,7 @@ Query Arguments:
 - from: Lower bound of the date range in YYYY-MM-DD format (required)
 - until: Upper bound of the date range in YYYY-MM-DD format (required)
 - artist: Name of the artist for filtering releases (optional)
-Response Schema:
+Response Schema:```json
 {
 "type": "array",
 "items": [
@@ -31,7 +31,7 @@ Response Schema:
 }
 }
 ]
-}
+}```
 Example
 URL: /releases
 Method: GET
@@ -39,7 +39,7 @@ Query Arguments:
 ● from=2021-01-02
 ● until=2021-01-05
 ● artist=VetLove
-Response:
+Response:```json
 [
 {
 "released_at": "2021-01-04",
@@ -55,7 +55,7 @@ Response:
 {"artist": "VetLove", "name": "Play That Game - Desib-L Remix"}
 ]
 }
-]
+]```
 Requirements
 ● It should be implemented using the latest version of Golang.
 ● The dependencies should be handled using Go Modules.
@@ -99,7 +99,7 @@ Query Arguments:
 ● api_key: Key used to authenticate into the service (required)
 ● released_at: Month to filter songs by the time they were released, in YYYY-MM format
 (required)
-Successful Response:
+Successful Response:```json
 [
 {
 "song_id": "a7d8feae-cac5-40c2-8272-53b4089636c7",
@@ -117,4 +117,4 @@ Successful Response:
 Error Response:
 {
 "error": "error message"
-}
+}```
