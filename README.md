@@ -1,20 +1,21 @@
-## Build & Run
-* `cd ccheznoiu-dd-technical-test`
-* `export BV_APIKEY='' # supply secret key`
-* `go build`
-* `./ccheznoiu-dd-technical-test &`
-* `curl http://localhost:8000/releases?from=2021-01-01&until=2021-03-31 # etc.`
-
+## Objective
+* A "fast and cost-efficient" **Go** API to a song releases REST service which returns individual songs by release date
+* Accepts `from` and `until` URL parameter dates
+* Optionally accepts `artist` URL parameter
+* Groups songs by date
+* The downstream serves two URI's, returning daily and monthly results respectively, with a cost-to-cost ratio of 1:25
+* These results are "usable" for 30 days
 ## Rationale
-###### Cost-efficiency is preferred over performance.
-Because a `/monthly` call is cheaper than a `/daily` call for **every** day of a given month, prefer the former when `from` and `until` span 25 days of a month or more.
-
-An in-memory cache stores already-requested dates for 30 days. It is populated **per request** which puts the associated latency on first-time requesters. A performance-preferential design would, e.g. query every month first to build the cache, making the daily endpoint unnecessary (unless the downstream data is updated daily).
-
-Implied is **high-volume data**, i.e. making it unfeasible to keep a full copy of the datastore in memory in addition to making requests unpredictable.
-
-Also implied is **low-volume traffic**, i.e. we do not assume that requests for any given date can land on any given day, which would have dictated that a missing month would eventually be filled out by partial requests, making it cheaper to fill out the entire month once it was discovered to be missing.
-
-## Future Enhancements
-* consider a persisted cache for case: _request over unfeasible range of dates_
-* pass error response from Release Service to response body
+* It is preferrable to use the monthly URI when:
+    * a request is new (not cached) and spans 25 or more days of a month
+    * request volume is high, i.e. had a partial (fewer than 25 days) request been previously made for a given month, requests for the missing portion (or the entirety) of the month can be expected within the 30-day lifespan of the response data
+    * high request volume also dictates that the response cache may be prebuilt, i.e. by requesting all months at once as opposed to per request (which also prioritizes _speed_ with no impact to _cost-efficiency_)
+* It is preferrable to use the daily URI when:
+    * a request is new and partial
+    * request volume is low (converse of above)
+    * data volume is high, i.e. even given high volume requests, the accompanying assumptions are attenuated
+    * release data is up-to-date and requests for the current month can be expected
+* High volume data would dictate a presisted cache, but we will prefer a memory cache for Go demonstration purposes
+* We will prefer "cost-effectiveness" since a well-written Go program can be expected to be "fast." As such, and given no indication of the two volumes described above, we will populate the cache on a per-request basis (the latency of the downstream service will still fall upon requesters of new data).
+* Given no error handling requirements, expired data would serve when the downstream is unexpectedly unavailable (unless there were a contractual definition of "usable")
+* Nonetheless, a housekeeping goroutine which deletes expired cache entries is included for demonstration purposes
