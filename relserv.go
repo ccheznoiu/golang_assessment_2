@@ -21,6 +21,31 @@ type releaseServiceCache struct {
 	songs map[string]songsByDateMeta
 }
 
+func (c *releaseServiceCache) maintain() {
+	c.mu.Lock()
+	for k, v := range c.songs {
+		if v.isExpired() {
+			delete(c.songs, k)
+		}
+	}
+	c.mu.Unlock()
+}
+
+func newCache(c <-chan time.Time) *releaseServiceCache {
+	cache := &releaseServiceCache{songs: make(map[string]songsByDateMeta)}
+
+	go func() {
+		for {
+			select {
+			case <-c:
+				cache.maintain()
+			}
+		}
+	}()
+
+	return cache
+}
+
 func (c *releaseServiceCache) callRS(date, url string) error {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {

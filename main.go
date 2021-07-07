@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 )
 
 const (
@@ -19,8 +20,19 @@ func main() {
 	if apiKey == "" {
 		log.Fatal("Set APIKEY variable?")
 	}
-	cache = &releaseServiceCache{songs: make(map[string]songsByDateMeta)}
+
+	ticker := time.NewTicker(24 * time.Hour)
+	defer ticker.Stop()
+
+	cache = newCache(ticker.C)
 
 	http.HandleFunc(releasesURL, releasesAPI)
-	log.Fatal(http.ListenAndServe(":8000", nil))
+
+	server := &http.Server{
+		ReadTimeout:  time.Second,
+		WriteTimeout: time.Minute,
+		Addr:         "8000",
+	}
+
+	log.Fatal(server.ListenAndServe())
 }
