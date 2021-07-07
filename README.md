@@ -8,7 +8,8 @@ Query Arguments:
 - from: Lower bound of the date range in YYYY-MM-DD format (required)
 - until: Upper bound of the date range in YYYY-MM-DD format (required)
 - artist: Name of the artist for filtering releases (optional)
-Response Schema:```json
+Response Schema:
+```json
 {
 "type": "array",
 "items": [
@@ -31,7 +32,8 @@ Response Schema:```json
 }
 }
 ]
-}```
+}
+```
 Example
 URL: /releases
 Method: GET
@@ -39,7 +41,8 @@ Query Arguments:
 ● from=2021-01-02
 ● until=2021-01-05
 ● artist=VetLove
-Response:```json
+Response:
+```json
 [
 {
 "released_at": "2021-01-04",
@@ -55,12 +58,13 @@ Response:```json
 {"artist": "VetLove", "name": "Play That Game - Desib-L Remix"}
 ]
 }
-]```
+]
+```
 Requirements
-● It should be implemented using the latest version of Golang.
-● The dependencies should be handled using Go Modules.
-● There must be a README that explains how to set up and install the application.
-● The code must be in the GitHub repository assigned to you.
+* It should be implemented using the latest version of Golang.
+* The dependencies should be handled using Go Modules.
+* There must be a README that explains how to set up and install the application.
+* The code must be in the GitHub repository assigned to you.
 Considerations
 Consider this test as not only as an assessment of your skills as a developer but as a way for us
 to get to know you as a potential teammate. With that in mind, please feel free to reach out to us
@@ -90,16 +94,17 @@ mind that this should be treated as a secret value.
 URL: https://de-challenge.ltvco.com/v1/songs/daily
 Method: GET
 Query Arguments:
-● api_key: Key used to authenticate into the service (required)
-● released_at: Day to filter songs by the time they were released, in YYYY-MM-DD format
+* api_key: Key used to authenticate into the service (required)
+* released_at: Day to filter songs by the time they were released, in YYYY-MM-DD format
 (required)
 URL: https://de-challenge.ltvco.com/v1/songs/monthly
 Method: GET
 Query Arguments:
-● api_key: Key used to authenticate into the service (required)
-● released_at: Month to filter songs by the time they were released, in YYYY-MM format
+* api_key: Key used to authenticate into the service (required)
+* released_at: Month to filter songs by the time they were released, in YYYY-MM format
 (required)
-Successful Response:```json
+Successful Response:
+```json
 [
 {
 "song_id": "a7d8feae-cac5-40c2-8272-53b4089636c7",
@@ -117,4 +122,5 @@ Successful Response:```json
 Error Response:
 {
 "error": "error message"
-}```
+}
+```
