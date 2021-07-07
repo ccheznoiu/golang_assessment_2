@@ -12,7 +12,7 @@
     * high request volume also dictates that the response cache may be prebuilt, i.e. by requesting all months at once as opposed to per request (which also prioritizes _speed_ with no impact to _cost-efficiency_)
 * It is preferrable to use the daily URI when:
     * a request is new and partial
-    * request volume is low (converse of above)
+    * request volume is low (inverse of above)
     * data volume is high, i.e. even given high volume requests, the accompanying assumptions are attenuated
     * release data is up-to-date and requests for the current month can be expected
 * High volume data would dictate a presisted cache, but we will prefer a memory cache for Go demonstration purposes
