@@ -79,7 +79,7 @@ func getSongs(from, until time.Time, artist string, callDaily, useExpired bool, 
 			songC <- &songsByDate{Date: date, Songs: cached.Songs}
 		}
 
-		if from.Equal(until) || from.Day() == from.AddDate(0, 1, -from.Day()).Day() {
+		if from.Equal(until) || from.Equal(from.AddDate(0, 1, -from.Day())) {
 			if l := len(exp); l > 0 {
 				from, until := exp[0], exp[0]
 				callDaily := true
